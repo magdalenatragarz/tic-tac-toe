@@ -12,7 +12,7 @@ public class ManualPlayer implements Player {
     @Override
     public Move move(GameBoard gameBoard) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Wspolrzedne ruchu: \n");
+        System.out.println("Wspolrzedne ruchu:");
         int x = scanner.nextInt();
         int y = scanner.nextInt();
         return new Move(x, y, isX);

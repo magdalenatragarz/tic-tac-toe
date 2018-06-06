@@ -15,12 +15,11 @@ public class ComputerPlayer implements Player {
         if (hypotheticalMoves.size() == 0) return new Move(gameBoard.getSize() / 2, gameBoard.getSize() / 2, isX);
         int max = 0;
         int functionvalue;
-        HypotheticalMove hypotheticalMoveMax = null;
+        HypotheticalMove hypotheticalMoveMax = hypotheticalMoves.get(0);
         GameBoard newGameBoard = new GameBoard(gameBoard);
-        if (gameBoard.level > 10)
+        if (gameBoard.level > 0)
             for (HypotheticalMove hypotheticalMove : hypotheticalMoves) {
                 functionvalue = heuristics(newGameBoard, hypotheticalMove);
-                System.out.println("utility of (" + hypotheticalMove.getX() + "," + hypotheticalMove.getY() + " " + functionvalue);
                 if (functionvalue > max) {
                     max = functionvalue;
                     hypotheticalMoveMax = hypotheticalMove;
@@ -44,10 +43,16 @@ public class ComputerPlayer implements Player {
         if (isX) {
             for (Move xMove : gameBoard.xMoves) {
                 value += checkRepeats(xMove, gameBoard);
+                for (Move oMove : gameBoard.oMoves) {
+                    value += checkRepeats(oMove, gameBoard);
+                }
             }
         } else {
             for (Move oMove : gameBoard.oMoves) {
                 value += checkRepeats(oMove, gameBoard);
+                for (Move xMove : gameBoard.oMoves) {
+                    value += checkRepeats(xMove, gameBoard);
+                }
             }
         }
         return value;
@@ -62,16 +67,22 @@ public class ComputerPlayer implements Player {
         if (isX) {
             for (Move xMove : gameBoard.xMoves) {
                 value += checkRepeats(xMove, gameBoard);
-                for (Move oMove : gameBoard.oMoves) {
-                    value += (100 + checkRepeats(oMove, gameBoard));
-                }
             }
         } else {
             for (Move oMove : gameBoard.oMoves) {
                 value += checkRepeats(oMove, gameBoard);
-                for (Move xMove : gameBoard.oMoves) {
-                    value += (100 + checkRepeats(xMove, gameBoard));
-                }
+            }
+        }
+        gameBoard.remove(hypotheticalMove);
+        gameBoard.move(hypotheticalMove, !isX);
+
+        if (isX) {
+            for (Move xMove : gameBoard.xMoves) {
+                value += checkRepeats(xMove, gameBoard);
+            }
+        } else {
+            for (Move oMove : gameBoard.oMoves) {
+                value += checkRepeats(oMove, gameBoard);
             }
         }
         gameBoard.remove(hypotheticalMove);
@@ -85,8 +96,6 @@ public class ComputerPlayer implements Player {
         Map<HypotheticalMove, Integer> movesAndUtilityValueSet = new HashMap<>();
 
         List<Integer> x1 = new ArrayList<>();
-        List<Integer> x2 = new ArrayList<>();
-
 
         for (HypotheticalMove hypotheticalMove1 : hypotheticalMoves1) {
             gameBoard.move(hypotheticalMove1, true);
@@ -125,12 +134,12 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() - counter - 1 > 0 && move.getY() >= 0 && move.getX() + 1 < gameBoard.getSize() && move.getY() - 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX() - counter - 1][move.getY()].isSet() && !gameBoard.fields[move.getX() + 1][move.getY()].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
 
         counter = 0;
@@ -140,13 +149,13 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() - 1 > 0 && move.getY() > 0 && move.getX() + counter + 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX() + counter + 1][move.getY()].isSet() && !gameBoard.fields[move.getX() - 1][move.getY()].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
 
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
         counter = 0;
 
@@ -155,13 +164,13 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() >= 0 && move.getY() >= 0 && move.getX() < gameBoard.getSize() && move.getY() + counter + 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX()][move.getY() + counter + 1].isSet() && !gameBoard.fields[move.getX()][move.getY() - 1].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
 
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
         counter = 0;
 
@@ -170,13 +179,13 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() >= 0 && move.getY() - counter - 1 >= 0 && move.getX() < gameBoard.getSize() && move.getY() + 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX()][move.getY() - counter - 1].isSet() && !gameBoard.fields[move.getX()][move.getY() + 1].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
 
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
         counter = 0;
 
@@ -185,28 +194,28 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() - counter - 1 > 0 && move.getY() >= 0 && move.getX() + 1 < gameBoard.getSize() && move.getY() < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX() - counter - 1][move.getY() + counter + 1].isSet() && !gameBoard.fields[move.getX() + 1][move.getY() - 1].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
 
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
         counter = 0;
 
         while (gameBoard.hasNorthWestNeighbour(move.getX() - counter, move.getY() - counter)) {
             counter++;
-            payoff +=counter;
+            payoff += counter;
             if (move.getX() - counter - 1 > 0 && move.getY() - counter - 1 > 0 && move.getX() + 1 < gameBoard.getSize() && move.getY() + 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX() - counter - 1][move.getY() - counter - 1].isSet() && !gameBoard.fields[move.getX() + 1][move.getY() + 1].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
 
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
 
         counter = 0;
@@ -215,12 +224,12 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() - 1 >= 0 && move.getY() - counter - 1 >= 0 && move.getX() + counter + 1 < gameBoard.getSize() && move.getY() + 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX() + counter + 1][move.getY() - counter - 1].isSet() && !gameBoard.fields[move.getX() - 1][move.getY() + 1].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
         }
         counter = 0;
         while (gameBoard.hasSouthEastNeighbour(move.getX() + counter, move.getY() + counter)) {
@@ -228,56 +237,141 @@ public class ComputerPlayer implements Player {
             payoff += counter;
             if (move.getX() > 0 && move.getY() > 0 && move.getX() + counter + 1 < gameBoard.getSize() && move.getY() + counter + 1 < gameBoard.getSize() && (counter == 3 || counter == 4)) {
                 if (!gameBoard.fields[move.getX() + counter + 1][move.getY() + counter + 1].isSet() && !gameBoard.fields[move.getX() - 1][move.getY() - 1].isSet()) {
-                    payoff += 5;
+                    payoff += 7;
                 } else {
                     payoff += 2;
                 }
             }
-            if (counter == 4) payoff += 10;
+            if (counter == 4) payoff += 20;
+        }
+
+        if (isX) {
+            for (Move oMove : gameBoard.oMoves) {
+                counter = 0;
+                while (gameBoard.hasEastNeighbour(oMove.getX() + counter, oMove.getY())) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasWestNeighbour(oMove.getX() - counter, oMove.getY())) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasNorthNeighbour(oMove.getX(), oMove.getY() - counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasSouthNeighbour(oMove.getX(), oMove.getY() + counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasNorthEastNeighbour(oMove.getX() + counter, oMove.getY() - counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasSouthEastNeighbour(oMove.getX() + counter, oMove.getY() + counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasNorthWestNeighbour(oMove.getX() - counter, oMove.getY() - counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasSouthWestNeighbour(oMove.getX() - counter, oMove.getY() + counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+            }
+        } else {
+            for (Move xMove : gameBoard.xMoves) {
+                counter = 0;
+                while (gameBoard.hasEastNeighbour(xMove.getX() + counter, xMove.getY())) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasWestNeighbour(xMove.getX() - counter, xMove.getY())) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasNorthNeighbour(xMove.getX(), xMove.getY() - counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasSouthNeighbour(xMove.getX(), xMove.getY() + counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasNorthEastNeighbour(xMove.getX() + counter, xMove.getY() - counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasSouthEastNeighbour(xMove.getX() + counter, xMove.getY() + counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasNorthWestNeighbour(xMove.getX() - counter, xMove.getY() - counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+                counter = 0;
+                while (gameBoard.hasSouthWestNeighbour(xMove.getX() - counter, xMove.getY() + counter)) {
+                    counter++;
+                }
+                if (counter >= 3) payoff += (Math.pow(counter, 2));
+            }
         }
         return payoff;
     }
 
 
-
-
-
     List<HypotheticalMove> findMoorNeighborhood(GameBoard gameBoard) {
         List<HypotheticalMove> hypotheticalMoves = new ArrayList<>();
         for (Move move : gameBoard.oMoves) {
-            if (!move.hasEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY()>=0)
+            if (!move.hasEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() + 1, move.getY()));
-            if (!move.hasWestNeighbour(gameBoard)&& move.getX() >0 && move.getY()>=0 )
+            if (!move.hasWestNeighbour(gameBoard) && move.getX() > 0 && move.getY() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() - 1, move.getY()));
-            if (!move.hasNorthNeighbour(gameBoard)&& move.getY()>0 && move.getX()>=0)
+            if (!move.hasNorthNeighbour(gameBoard) && move.getY() > 0 && move.getX() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX(), move.getY() - 1));
-            if (!move.hasSouthNeighbour(gameBoard)&& move.getY() + 1 < gameBoard.getSize() && move.getY()>=0)
+            if (!move.hasSouthNeighbour(gameBoard) && move.getY() + 1 < gameBoard.getSize() && move.getY() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX(), move.getY() + 1));
-            if (!move.hasNorthEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY()>0)
+            if (!move.hasNorthEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY() > 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() + 1, move.getY() - 1));
-            if (!move.hasNorthWestNeighbour(gameBoard)&& move.getY()>0 && move.getX()>0)
+            if (!move.hasNorthWestNeighbour(gameBoard) && move.getY() > 0 && move.getX() > 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() - 1, move.getY() - 1));
-            if (!move.hasSouthEastNeighbour(gameBoard)&& move.getX() + 1 < gameBoard.getSize() && move.getY()+1 <gameBoard.getSize())
+            if (!move.hasSouthEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY() + 1 < gameBoard.getSize())
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() + 1, move.getY() + 1));
-            if (!move.hasSouthWestNeighbour(gameBoard)&& move.getY() + 1 < gameBoard.getSize() && move.getX()>0)
+            if (!move.hasSouthWestNeighbour(gameBoard) && move.getY() + 1 < gameBoard.getSize() && move.getX() > 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() - 1, move.getY() + 1));
         }
         for (Move move : gameBoard.xMoves) {
-            if (!move.hasEastNeighbour(gameBoard)&& move.getX() + 1 < gameBoard.getSize() && move.getY()>=0)
+            if (!move.hasEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() + 1, move.getY()));
-            if (!move.hasWestNeighbour(gameBoard) && move.getX() >0 && move.getY()>=0 )
+            if (!move.hasWestNeighbour(gameBoard) && move.getX() > 0 && move.getY() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() - 1, move.getY()));
-            if (!move.hasNorthNeighbour(gameBoard)&& move.getY()>0 && move.getX()>=0)
+            if (!move.hasNorthNeighbour(gameBoard) && move.getY() > 0 && move.getX() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX(), move.getY() - 1));
-            if (!move.hasSouthNeighbour(gameBoard)&& move.getY() + 1 < gameBoard.getSize() && move.getY()>=0)
+            if (!move.hasSouthNeighbour(gameBoard) && move.getY() + 1 < gameBoard.getSize() && move.getY() >= 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX(), move.getY() + 1));
-            if (!move.hasNorthEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY()>0)
+            if (!move.hasNorthEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY() > 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() + 1, move.getY() - 1));
-            if (!move.hasNorthWestNeighbour(gameBoard)&& move.getY()>0 && move.getX()>0)
+            if (!move.hasNorthWestNeighbour(gameBoard) && move.getY() > 0 && move.getX() > 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() - 1, move.getY() - 1));
-            if (!move.hasSouthEastNeighbour(gameBoard)&& move.getX() + 1 < gameBoard.getSize() && move.getY()+1 <gameBoard.getSize())
+            if (!move.hasSouthEastNeighbour(gameBoard) && move.getX() + 1 < gameBoard.getSize() && move.getY() + 1 < gameBoard.getSize())
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() + 1, move.getY() + 1));
-            if (!move.hasSouthWestNeighbour(gameBoard)&& move.getY() + 1 < gameBoard.getSize() && move.getX()>0)
+            if (!move.hasSouthWestNeighbour(gameBoard) && move.getY() + 1 < gameBoard.getSize() && move.getX() > 0)
                 hypotheticalMoves.add(new HypotheticalMove(move.getX() - 1, move.getY() + 1));
         }
 

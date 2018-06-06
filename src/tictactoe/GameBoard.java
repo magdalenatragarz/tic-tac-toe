@@ -128,7 +128,7 @@ public class GameBoard {
     }
 
     public boolean hasEastNeighbour(int x, int y) {
-        return x +1< size && y < size && fields[x + 1][y].isSet() && fields[x][y].isSet() && (fields[x + 1][y].isX() == fields[x][y].isX());
+        return x + 1 < size && y < size && fields[x + 1][y].isSet() && fields[x][y].isSet() && (fields[x + 1][y].isX() == fields[x][y].isX());
     }
 
     public boolean hasNorthNeighbour(int x, int y) {
@@ -136,19 +136,19 @@ public class GameBoard {
     }
 
     public boolean hasSouthNeighbour(int x, int y) {
-        return x < size && y +1 < size && fields[x][y + 1].isSet() && fields[x][y].isSet() && (fields[x][y + 1].isX() == fields[x][y].isX());
+        return x < size && y + 1 < size && fields[x][y + 1].isSet() && fields[x][y].isSet() && (fields[x][y + 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasSouthEastNeighbour(int x, int y) {
-        return x + 1 < size && y +1 < size && fields[x + 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y + 1].isX() == fields[x][y].isX());
+        return x + 1 < size && y + 1 < size && fields[x + 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y + 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasSouthWestNeighbour(int x, int y) {
-        return x > 0 && x < size && y +1 < size && fields[x - 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x - 1][y + 1].isX() == fields[x][y].isX());
+        return x > 0 && x < size && y + 1 < size && fields[x - 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x - 1][y + 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasNorthEastNeighbour(int x, int y) {
-        return y > 0 && x +1< size && y < size && fields[x + 1][y - 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y - 1].isX() == fields[x][y].isX());
+        return y > 0 && x + 1 < size && y < size && fields[x + 1][y - 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y - 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasNorthWestNeighbour(int x, int y) {
@@ -166,26 +166,48 @@ public class GameBoard {
         return false;
     }
 
+    public boolean chechWhoWins() {
+        for (Move move : xMoves) {
+            if (checkNeighbourhood(move.getX(), move.getY())) return true;
+        }
+        for (Move move : oMoves) {
+            if (checkNeighbourhood(move.getX(), move.getY())) return false;
+        }
+        return false;
+    }
+
+    public boolean checkIfDraw() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (fields[i][j].isSet()) {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("    ");
         for (int i = 0; i < size; i++) {
-            builder.append("  ").append(i).append(" ");
+            builder.append(i).append(" ");
         }
         builder.append("\n");
         for (int y = 0; y < size; y++) {
-            builder.append("  ").append(y).append(" ");
+            builder.append(" ").append(y).append(" ");
             for (int x = 0; x < size; x++) {
                 if (fields[x][y].isSet()) {
                     if (fields[x][y].isX()) {
-                        builder.append("| X ");
+                        builder.append("|X");
                     } else {
-                        builder.append("| O ");
+                        builder.append("|O");
                     }
                 } else {
-                    builder.append("| _ ");
+                    builder.append("|_");
                 }
             }
             builder.append("\n");

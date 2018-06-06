@@ -34,7 +34,6 @@ public class TicTacToe {
         }
         gameBoard.level++;
         gameBoard.fields[move.getX()][move.getY()].set(gameBoard.level);
-        //gameBoard.fields[move.getY()][move.getX()].setLevel(gameBoard.level);
         if (move.isX()) {
             gameBoard.xMoves.add(move);
         } else {
@@ -45,11 +44,18 @@ public class TicTacToe {
 
     public void play() {
         while (!gameBoard.checkIfWins()) {
+            if (gameBoard.checkIfDraw()) {
+                System.out.println("REMIS");
+                return;
+            }
             move();
-            //System.out.println(gameBoard.xMoves.toString());
-            //System.out.println(gameBoard.oMoves.toString());
-            //System.out.println(gameBoard.toString2());
             System.out.println(gameBoard.toString());
+        }
+        boolean isX = gameBoard.chechWhoWins();
+        if (isX) {
+            System.out.println("WYGRANA X");
+        } else {
+            System.out.println("WYGRANA O");
         }
 
     }
