@@ -128,7 +128,7 @@ public class GameBoard {
     }
 
     public boolean hasEastNeighbour(int x, int y) {
-        return x < size && y < size && fields[x + 1][y].isSet() && fields[x][y].isSet() && (fields[x + 1][y].isX() == fields[x][y].isX());
+        return x +1< size && y < size && fields[x + 1][y].isSet() && fields[x][y].isSet() && (fields[x + 1][y].isX() == fields[x][y].isX());
     }
 
     public boolean hasNorthNeighbour(int x, int y) {
@@ -136,19 +136,19 @@ public class GameBoard {
     }
 
     public boolean hasSouthNeighbour(int x, int y) {
-        return x < size && y < size && fields[x][y + 1].isSet() && fields[x][y].isSet() && (fields[x][y + 1].isX() == fields[x][y].isX());
+        return x < size && y +1 < size && fields[x][y + 1].isSet() && fields[x][y].isSet() && (fields[x][y + 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasSouthEastNeighbour(int x, int y) {
-        return x < size && y < size && fields[x + 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y + 1].isX() == fields[x][y].isX());
+        return x + 1 < size && y +1 < size && fields[x + 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y + 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasSouthWestNeighbour(int x, int y) {
-        return x > 0 && x < size && y < size && fields[x - 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x - 1][y + 1].isX() == fields[x][y].isX());
+        return x > 0 && x < size && y +1 < size && fields[x - 1][y + 1].isSet() && fields[x][y].isSet() && (fields[x - 1][y + 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasNorthEastNeighbour(int x, int y) {
-        return y > 0 && x < size && y < size && fields[x + 1][y - 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y - 1].isX() == fields[x][y].isX());
+        return y > 0 && x +1< size && y < size && fields[x + 1][y - 1].isSet() && fields[x][y].isSet() && (fields[x + 1][y - 1].isX() == fields[x][y].isX());
     }
 
     public boolean hasNorthWestNeighbour(int x, int y) {

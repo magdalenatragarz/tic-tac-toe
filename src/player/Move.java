@@ -33,7 +33,7 @@ public class Move implements MoveInterface {
     }
 
     public boolean hasEastNeighbour(GameBoard gameBoard) {
-        return x < gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x + 1][y].isSet() && gameBoard.fields[x][y].isSet();
+        return x +1< gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x + 1][y].isSet() && gameBoard.fields[x][y].isSet();
     }
 
     public boolean hasNorthNeighbour(GameBoard gameBoard) {
@@ -41,19 +41,19 @@ public class Move implements MoveInterface {
     }
 
     public boolean hasSouthNeighbour(GameBoard gameBoard) {
-        return x < gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x][y + 1].isSet() && gameBoard.fields[x][y].isSet();
+        return x < gameBoard.getSize() && y +1< gameBoard.getSize() && gameBoard.fields[x][y + 1].isSet() && gameBoard.fields[x][y].isSet();
     }
 
     public boolean hasSouthEastNeighbour(GameBoard gameBoard) {
-        return x < gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x + 1][y + 1].isSet() && gameBoard.fields[x][y].isSet();
+        return x +1< gameBoard.getSize() && y +1< gameBoard.getSize() && gameBoard.fields[x + 1][y + 1].isSet() && gameBoard.fields[x][y].isSet();
     }
 
     public boolean hasSouthWestNeighbour(GameBoard gameBoard) {
-        return x > 0 && x < gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x - 1][y + 1].isSet() && gameBoard.fields[x][y].isSet();
+        return x > 0 && x < gameBoard.getSize() && y +1< gameBoard.getSize() && gameBoard.fields[x - 1][y + 1].isSet() && gameBoard.fields[x][y].isSet();
     }
 
     public boolean hasNorthEastNeighbour(GameBoard gameBoard) {
-        return y > 0 && x < gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x + 1][y - 1].isSet() && gameBoard.fields[x][y].isSet();
+        return y > 0 && x +1< gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x + 1][y - 1].isSet() && gameBoard.fields[x][y].isSet();
     }
 
     public boolean hasNorthWestNeighbour(GameBoard gameBoard) {
