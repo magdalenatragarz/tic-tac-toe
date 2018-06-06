@@ -30,10 +30,6 @@ public class ComputerPlayer implements Player {
 
         return new Move(hypotheticalMoveMax.getX(), hypotheticalMoveMax.getY(), isX);
     }
-/*
-    GameBoard getBoardWithHypotheticalMove(){
-
-    }*/
 
     public int utilityFunction(GameBoard gameBoard, HypotheticalMove hypotheticalMove) {
         int value = 0;
@@ -64,7 +60,6 @@ public class ComputerPlayer implements Player {
         int payoff = 0;
 
         int counter = 0;
-        //boolean hasNeighbour = true;
 
         while (gameBoard.hasWestNeighbour(move.getX() - counter, move.getY())) {
             counter++;

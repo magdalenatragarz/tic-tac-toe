@@ -33,7 +33,6 @@ public class HypotheticalMove implements MoveInterface {
     }
 
     public boolean hasSouthEastNeighbour(GameBoard gameBoard) {
-        //System.out.println("south east:"+x+","+y+","+isX+"=?="+gameBoard.fields[x+1][y+1].isX()+", "+ gameBoard.fields[x][y].getLevel() + "eh" + gameBoard.fields[x+1][y+1].getLevel());
         return x < gameBoard.getSize() && y < gameBoard.getSize() && gameBoard.fields[x+1][y+1].isSet() && !gameBoard.fields[x][y].isSet();
     }
 
