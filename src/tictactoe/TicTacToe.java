@@ -19,9 +19,9 @@ public class TicTacToe {
 
     private void move() {
         Move move;
-        if ((gameBoard.level+1) % 2 == 1) {
+        if ((gameBoard.level + 1) % 2 == 1) {
             move = player1.move(gameBoard);
-            while(gameBoard.fields[move.getX()][move.getY()].isSet()){
+            while (gameBoard.fields[move.getX()][move.getY()].isSet()) {
                 System.out.println("Miejsce jest już zajęte, spróbu ponownie");
                 move = player1.move(gameBoard);
             }
@@ -43,9 +43,8 @@ public class TicTacToe {
     }
 
 
-
-    public void play(){
-        while (!gameBoard.checkIfWins()){
+    public void play() {
+        while (!gameBoard.checkIfWins()) {
             move();
             //System.out.println(gameBoard.xMoves.toString());
             //System.out.println(gameBoard.oMoves.toString());

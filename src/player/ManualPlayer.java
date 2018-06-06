@@ -9,14 +9,13 @@ public class ManualPlayer implements Player {
     boolean isX;
 
 
-
     @Override
     public Move move(GameBoard gameBoard) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Wspolrzedne ruchu: \n");
-        int x =scanner.nextInt();
-        int y =scanner.nextInt();
-        return new Move(x,y,isX);
+        int x = scanner.nextInt();
+        int y = scanner.nextInt();
+        return new Move(x, y, isX);
     }
 
     @Override

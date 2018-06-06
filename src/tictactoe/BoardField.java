@@ -10,24 +10,25 @@ public class BoardField {
         this.level = level;
     }
 
-    public void set(int level){
+    public void set(int level) {
         this.isSet = true;
         this.level = level;
     }
-
-    /*public void setLevel(int level) {
-        this.level = level;
-    }*/
 
     public int getLevel() {
         return level;
     }
 
-    public boolean isSet(){
+    public boolean isSet() {
         return isSet;
     }
 
-    public boolean isX(){
+    public boolean isX() {
         return (level % 2) == 1;
+    }
+
+    public void unset() {
+        this.isSet = false;
+        this.level = 0;
     }
 }
