@@ -22,5 +22,4 @@ public class ManualPlayer implements Player {
     public void setIsX(boolean isX) {
         this.isX = isX;
     }
-
 }

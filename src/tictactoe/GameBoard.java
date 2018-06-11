@@ -46,8 +46,10 @@ public class GameBoard {
     public void move(HypotheticalMove hypotheticalMove, boolean isX) {
         if (isX) {
             fields[hypotheticalMove.getX()][hypotheticalMove.getY()].set(1);
+            //fields[hypotheticalMove.getX()][hypotheticalMove.getY()].isX = isX;
         } else {
             fields[hypotheticalMove.getX()][hypotheticalMove.getY()].set(2);
+            //fields[hypotheticalMove.getX()][hypotheticalMove.getY()].isX = isX;
         }
     }
 
